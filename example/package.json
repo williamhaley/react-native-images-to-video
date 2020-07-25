@@ -9,8 +9,11 @@
     "start": "react-native start"
   },
   "dependencies": {
+    "@types/react-native-share": "^3.3.0",
     "react": "16.11.0",
-    "react-native": "0.62.2"
+    "react-native": "0.62.2",
+    "react-native-fs": "^2.16.6",
+    "react-native-share": "^3.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",

@@ -2,6 +2,8 @@
 
 Convert a series of images to a video
 
+**This is iOS only for the moment and in alpha**
+
 ## Installation
 
 ```sh
@@ -13,9 +15,11 @@ npm install react-native-images-to-video
 ```js
 import ImagesToVideo from "react-native-images-to-video";
 
-// ...
-
-const result = await ImagesToVideo.multiply(3, 7);
+const videoURL = await ImagesToVideo.render({
+    width: 300,
+    height: 400,
+    absolutePaths: ['/path/to/image1.jpg', '/path/to/image2.jpg'],
+});
 ```
 
 ## Contributing

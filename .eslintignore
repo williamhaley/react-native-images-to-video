@@ -1,0 +1,4 @@
+# Ignore the example. Unrelated to the actual module.
+example/*
+# Ignore the compiled code.
+lib/*

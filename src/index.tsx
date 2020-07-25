@@ -1,7 +1,13 @@
 import { NativeModules } from 'react-native';
 
+interface ImageToVideoOptions {
+  width: number;
+  height: number;
+  absolutePaths: Array<string>;
+}
+
 type ImagesToVideoType = {
-  multiply(a: number, b: number): Promise<number>;
+  render(options: ImageToVideoOptions): Promise<string>;
 };
 
 const { ImagesToVideo } = NativeModules;

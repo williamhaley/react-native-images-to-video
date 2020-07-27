@@ -72,10 +72,6 @@ func allocateOutput(videoFilename: String) -> URL? {
 
 class VideoWriter {
     let imagesPerSecond: TimeInterval = 2
-    
-    init() {
-        
-    }
 
     func buildVideoFromImageArray(outputURL: URL, images: [UIImage], outputSize: CGSize, completion: @escaping (Error?) -> Void) {
         guard let videoWriter = try? AVAssetWriter(outputURL: outputURL, fileType: AVFileType.mp4) else {

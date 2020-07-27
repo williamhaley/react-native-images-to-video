@@ -34,7 +34,20 @@ class ImagesToVideo: NSObject {
             return
         }
         
-        let images: [UIImage] = absolutePaths.map {UIImage.init(contentsOfFile: $0)! }
+        let potentialImages: [UIImage?] = absolutePaths.map {
+            // Translate to a proper URL for potential parsing and validation.
+            let url = URL.init(fileURLWithPath: $0)
+            
+            return UIImage.init(contentsOfFile: url.path)
+        }
+        // Remove any nil values.
+        let images = potentialImages.compactMap{ $0 }
+        
+        if images.count == 0 {
+            reject("images", "no valid images found", nil)
+            return
+        }
+
         let outputSize = CGSize.init(width: width, height: height)
         let videoWriter = VideoWriter.init()
         

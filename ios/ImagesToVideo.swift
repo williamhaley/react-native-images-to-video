@@ -36,8 +36,10 @@ class ImagesToVideo: NSObject {
         
         let potentialImages: [UIImage?] = absolutePaths.map {
             // Translate to a proper URL for potential parsing and validation.
-            let url = URL.init(fileURLWithPath: $0)
-            
+            guard let url = URL.init(string: $0) else {
+                return nil
+            }
+
             return UIImage.init(contentsOfFile: url.path)
         }
         // Remove any nil values.

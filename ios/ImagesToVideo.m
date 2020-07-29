@@ -8,4 +8,10 @@ RCT_EXTERN_METHOD(
                   withRejecter:(RCTPromiseRejectBlock)reject
                   )
 
+// https://reactnative.dev/docs/native-modules-ios#implementing--requiresmainqueuesetup
++ (BOOL)requiresMainQueueSetup
+{
+  return NO;
+}
+
 @end

@@ -64,11 +64,6 @@ class ImagesToVideo: NSObject {
             resolve(outputURL.absoluteString)
         })
     }
-    
-    // https://reactnative.dev/docs/native-modules-ios#implementing--requiresmainqueuesetup
-    static func requiresMainQueueSetup() -> Bool {
-        return true
-    }
 }
 
 func allocateOutput(videoFilename: String) -> URL? {

@@ -1,6 +1,5 @@
 import Foundation
 import AVFoundation
-import UIKit
 
 enum WriterError: Error {
     case assetWriter
@@ -64,6 +63,11 @@ class ImagesToVideo: NSObject {
 
             resolve(outputURL.absoluteString)
         })
+    }
+    
+    // https://reactnative.dev/docs/native-modules-ios#implementing--requiresmainqueuesetup
+    static func requiresMainQueueSetup() -> Bool {
+        return true
     }
 }
 

@@ -12,6 +12,10 @@ class ImagesToVideo: NSObject {
    
     @objc(render:withResolver:withRejecter:)
     func render(options: Dictionary<String, Any>, resolve:@escaping RCTPromiseResolveBlock, reject:@escaping RCTPromiseRejectBlock) -> Void {
+        guard let screenTimePerImage = options["screenTimePerImage"] as? TimeInterval else {
+            reject("options", "screenTimePerImage is not a TimeInterval", nil)
+            return
+        }
         guard let width = options["width"] as? Int else {
             reject("options", "width is not a number", nil)
             return
@@ -55,7 +59,12 @@ class ImagesToVideo: NSObject {
         print("output: \(outputURL)")
         print("size: \(outputSize)")
         
-        videoWriter.buildVideoFromImageArray(outputURL: outputURL, images: images, outputSize: outputSize, completion: { (err: Error?) -> Void in
+        videoWriter.buildVideoFromImageArray(
+            screenTimePerImage: screenTimePerImage,
+            outputURL: outputURL,
+            images: images,
+            outputSize: outputSize,
+            completion: { (err: Error?) -> Void in
             if let err = err {
                 reject("writer", err.localizedDescription, err)
                 return
@@ -85,9 +94,7 @@ func allocateOutput(videoFilename: String) -> URL? {
 }
 
 class VideoWriter {
-    let imagesPerSecond: TimeInterval = 2
-
-    func buildVideoFromImageArray(outputURL: URL, images: [UIImage], outputSize: CGSize, completion: @escaping (Error?) -> Void) {
+    func buildVideoFromImageArray(screenTimePerImage: TimeInterval, outputURL: URL, images: [UIImage], outputSize: CGSize, completion: @escaping (Error?) -> Void) {
         guard let videoWriter = try? AVAssetWriter(outputURL: outputURL, fileType: AVFileType.mp4) else {
             completion(WriterError.assetWriter)
             return
@@ -119,22 +126,21 @@ class VideoWriter {
         }
 
         if videoWriter.startWriting() {
-            let zeroTime = CMTimeMake(value: Int64(imagesPerSecond),timescale: Int32(1))
+            let zeroTime = CMTimeMake(value: Int64(screenTimePerImage), timescale: Int32(1))
             videoWriter.startSession(atSourceTime: zeroTime)
 
             assert(pixelBufferAdaptor.pixelBufferPool != nil)
 
             let media_queue = DispatchQueue(label: "mediaInputQueue")
             videoWriterInput.requestMediaDataWhenReady(on: media_queue, using: { () -> Void in
-                let fps: Int32 = 1
-                let framePerSecond: Int64 = Int64(self.imagesPerSecond)
-                let frameDuration = CMTimeMake(value: Int64(self.imagesPerSecond), timescale: fps)
+                let timescale: Int32 = 1
+                let frameTime = CMTimeMake(value: Int64(screenTimePerImage), timescale: timescale)
                 var frameCount: Int64 = 0
                 var appendSucceeded = true
                 for image in images {
                     if (videoWriterInput.isReadyForMoreMediaData) {
-                        let lastFrameTime = CMTimeMake(value: frameCount * framePerSecond, timescale: fps)
-                        let presentationTime = frameCount == 0 ? lastFrameTime : CMTimeAdd(lastFrameTime, frameDuration)
+                        let lastFrameTime = CMTimeMake(value: frameCount * Int64(screenTimePerImage), timescale: timescale)
+                        let presentationTime = frameCount == 0 ? lastFrameTime : CMTimeAdd(lastFrameTime, frameTime)
                         // Ownership of this follows the "Create Rule" but that is auto-managed in Swift so we do not need to release.
                         var pixelBuffer: CVPixelBuffer? = nil
                         let status: CVReturn = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, pixelBufferAdaptor.pixelBufferPool!, &pixelBuffer)

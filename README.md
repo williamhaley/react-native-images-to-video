@@ -16,6 +16,7 @@ npm install react-native-images-to-video
 import ImagesToVideo from "react-native-images-to-video";
 
 const videoURL = await ImagesToVideo.render({
+    screenTimePerImage: 3,
     width: 300,
     height: 400,
     absolutePaths: ['/path/to/image1.jpg', '/path/to/image2.jpg'],

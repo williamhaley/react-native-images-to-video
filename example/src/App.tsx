@@ -40,6 +40,7 @@ export default function App() {
             absolutePaths[0], // Use the first image to inform the width, height.
             async (width, height) => {
               const videoURL = await ImagesToVideo.render({
+                screenTimePerImage: 1,
                 width,
                 height,
                 absolutePaths

@@ -1,6 +1,7 @@
 import { NativeModules } from 'react-native';
 
 interface ImageToVideoOptions {
+  fileName: string;
   screenTimePerImage: number;
   width: number;
   height: number;

@@ -20,7 +20,7 @@ export default function App() {
 
           setAbsolutePaths(absolutePaths);
         } catch (err) {
-          console.error(err);
+          console.log(err);
         }
       })();
     }, 500);
@@ -40,7 +40,8 @@ export default function App() {
             absolutePaths[0], // Use the first image to inform the width, height.
             async (width, height) => {
               const videoURL = await ImagesToVideo.render({
-                screenTimePerImage: 1,
+                fileName: 'My Video',
+                screenTimePerImage: 3,
                 width,
                 height,
                 absolutePaths
@@ -56,7 +57,7 @@ export default function App() {
               console.log(res);
             },
             (err) => {
-              console.error(err);
+              console.log(err);
             },
           );
         }} />

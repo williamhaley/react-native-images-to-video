@@ -28,11 +28,21 @@ class ImagesToVideo: NSObject {
             reject("options", "absolute paths is not an array of urls", nil)
             return
         }
+        guard let fileName = options["fileName"] as? String else {
+            reject("options", "fileName is not a string", nil)
+            return
+        }
+        if fileName.count < 1 {
+            reject("options", "fileName is not valid", nil)
+            return
+        }
+        
+        
         if absolutePaths.count == 0 {
             reject("options", "absolute paths is empty", nil)
             return
         }
-        guard let outputURL = allocateOutput(videoFilename: "output") else {
+        guard let outputURL = allocateOutput(videoFilename: fileName) else {
             reject("output", "could not allocate output file", nil)
             return
         }

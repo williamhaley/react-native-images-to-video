@@ -1,6 +1,7 @@
 import { NativeModules } from 'react-native';
+import { Decimal } from 'decimal.js';
 
-interface ImageToVideoOptions {
+interface ImagesToVideoOptions {
   fileName: string;
   screenTimePerImage: number;
   width: number;
@@ -9,9 +10,25 @@ interface ImageToVideoOptions {
 }
 
 type ImagesToVideoType = {
-  render(options: ImageToVideoOptions): Promise<string>;
+  render(options: ImagesToVideoOptions): Promise<string>;
 };
 
 const { ImagesToVideo } = NativeModules;
 
-export default ImagesToVideo as ImagesToVideoType;
+const precision = 1000;
+
+const ImagesToVideoHelper = {
+  render(options: ImagesToVideoOptions): Promise<string> {
+    const screenTimeDecimal = new Decimal(options.screenTimePerImage);
+
+    const [timeValue, timeScale] = screenTimeDecimal.toFraction(precision);
+
+    return ImagesToVideo.render({
+      ...options,
+      timeValue: timeValue.toNumber(),
+      timeScale: timeScale.toNumber(),
+    });
+  },
+};
+
+export default ImagesToVideoHelper as ImagesToVideoType;

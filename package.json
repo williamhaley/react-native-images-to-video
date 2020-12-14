@@ -1,6 +1,6 @@
 {
   "name": "react-native-images-to-video",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "description": "Convert a series of images to a video",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -138,5 +138,8 @@
       "module",
       "typescript"
     ]
+  },
+  "dependencies": {
+    "decimal.js": "^10.2.1"
   }
 }

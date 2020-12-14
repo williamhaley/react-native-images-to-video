@@ -35,32 +35,86 @@ export default function App() {
       {absolutePaths.length === 0 ? (
         <Text>Loading data...</Text>
       ) : (
-        <Button disabled={!absolutePaths} title="Video from Images" onPress={async () => {
-          Image.getSize(
-            absolutePaths[0], // Use the first image to inform the width, height.
-            async (width, height) => {
-              const videoURL = await ImagesToVideo.render({
-                fileName: 'My Video',
-                screenTimePerImage: 3,
-                width,
-                height,
-                absolutePaths
-              });
+        <React.Fragment>
+          <Button disabled={!absolutePaths} title="Video from Images (3s per image)" onPress={async () => {
+            Image.getSize(
+              absolutePaths[0], // Use the first image to inform the width, height.
+              async (width, height) => {
+                const videoURL = await ImagesToVideo.render({
+                  fileName: 'My Video',
+                  screenTimePerImage: 3,
+                  width,
+                  height,
+                  absolutePaths
+                });
 
-              console.log(videoURL);
+                console.log(videoURL);
 
-              const res = await Share.open({
-                title: 'Video File',
-                message: 'Check out the video!',
-                url: videoURL,
-              });
-              console.log(res);
-            },
-            (err) => {
-              console.log(err);
-            },
-          );
-        }} />
+                const res = await Share.open({
+                  title: 'Video File',
+                  message: 'Check out the video!',
+                  url: videoURL,
+                });
+                console.log(res);
+              },
+              (err) => {
+                console.log(err);
+              },
+            );
+          }} />
+          <Button disabled={!absolutePaths} title="Video from Images (2/3s per image)" onPress={async () => {
+            Image.getSize(
+              absolutePaths[0], // Use the first image to inform the width, height.
+              async (width, height) => {
+                const videoURL = await ImagesToVideo.render({
+                  fileName: 'My Video',
+                  screenTimePerImage: 2 / 3,
+                  width,
+                  height,
+                  absolutePaths
+                });
+
+                console.log(videoURL);
+
+                const res = await Share.open({
+                  title: 'Video File',
+                  message: 'Check out the video!',
+                  url: videoURL,
+                });
+                console.log(res);
+              },
+              (err) => {
+                console.log(err);
+              },
+            );
+          }} />
+          <Button disabled={!absolutePaths} title="Video from Images (0.333s per image)" onPress={async () => {
+            Image.getSize(
+              absolutePaths[0], // Use the first image to inform the width, height.
+              async (width, height) => {
+                const videoURL = await ImagesToVideo.render({
+                  fileName: 'My Video',
+                  screenTimePerImage: 0.333,
+                  width,
+                  height,
+                  absolutePaths
+                });
+
+                console.log(videoURL);
+
+                const res = await Share.open({
+                  title: 'Video File',
+                  message: 'Check out the video!',
+                  url: videoURL,
+                });
+                console.log(res);
+              },
+              (err) => {
+                console.log(err);
+              },
+            );
+          }} />
+        </React.Fragment>
       )}
     </View>
   );
